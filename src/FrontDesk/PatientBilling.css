@@ -1,0 +1,103 @@
+/* 
+.dashboard-container12 {
+  display: flex;
+  flex-direction: row;
+  width: 280%;
+}
+
+.input-table-container12 {
+  width: 70%;
+  padding: 20px;
+  border-right: 3px solid #ccc;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+.input-field12{
+  width: 90%;
+}
+.additional-form {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 10px;
+  flex: 0 0 25%;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.additional-form-container {
+  flex: 0 0 10%; 
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.show-bill-container {
+  flex: 0 0 15%;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.input-table12 th,
+.input-table12 td {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+.input-table12 th{
+  background-color: #007bff;
+}
+
+.add-button12,.pay-button{
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+
+.additional-form-border {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  width: 100%;
+  margin-top: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.input-group {
+  margin-bottom: 10px;
+}
+
+.time-inputs {
+  display: flex;
+}
+
+.time-dropdown {
+  margin-right: 5px;
+}
+
+.back-button,
+.create-bill-button{
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 8px 15px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.total-section {
+  align-items: center;
+  margin-top: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.total-value {
+  font-weight: bold;
+  margin-left: 10px;
+} */

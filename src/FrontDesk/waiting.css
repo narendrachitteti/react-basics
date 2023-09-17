@@ -1,0 +1,122 @@
+
+
+.qa {
+    display: flex;
+    height: 60px;
+    width: 100%;
+    background-color: grey;
+  }
+  
+  .qb {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .qc {
+    margin-top: 10px;
+    height: 30px;
+    width: 200px;
+  }
+  
+  .qd {
+    margin-top: 10px;
+    height: 30px;
+    width: 200px;
+    margin-left: 25px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .qe {
+    margin-top: 10px;
+    height: 30px;
+    width: 100px;
+    margin-left: 25px;
+    background-color: blueviolet;
+    color: white;
+  }
+  
+  .qf {
+    width: 100%;
+    border-collapse: collapse;
+    margin-left: 1px;
+    margin-top: 20px;
+  }
+  
+  .qg {
+    height: 30px;
+    background-color: grey;
+    border: 1px solid grey;
+    color: black;
+    text-align: center;
+  }
+  
+  .dropdown-container {
+    position: relative;
+    margin-top: 10px;
+  }
+  
+  .dropdown-toggle {
+    padding: 8px 16px;
+    background-color: #f1f1f1;
+    border: none;
+    cursor: pointer;
+    width: 100%; 
+  }
+  
+  .dropdown-list {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1;
+    width: 100%; 
+  }
+  
+  .dropdown-list label {
+    display: block;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .dropdown-list input[type="checkbox"] {
+    margin-right: 8px;
+  }
+  
+  .dropdown-container:hover .dropdown-list {
+    display: block;
+  }
+  
+  .dropdown-list label:hover {
+    background-color: #e2e2e2;
+  }
+  
+  @media (max-width: 768px) {
+    .qb {
+      flex-direction: column;
+      align-items: center; 
+    }
+  
+    .qc,
+    .qd,
+    .qe {
+      width: 100%;
+      margin: 10px 0;
+    }
+  
+    .dropdown-container {
+      width: 100%;
+    }
+  
+    .dropdown-toggle {
+      width: 100%;
+    }
+  
+    .dropdown-list {
+      width: 100%;
+    }
+  }
+  

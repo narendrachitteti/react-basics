@@ -1,0 +1,34 @@
+.heading-11-pp {
+    align-items: center;
+    color: #5b85f1;
+    margin-left: 500px;
+  }
+  
+  .popup-table-11-pp {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .popup-table-11-pp th,
+  .popup-table-11-pp td {
+    border: none;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .popup-table-11-pp th {
+    background-color: #f2f2f2;
+  }
+  
+  .popup-table-11-pp tr:hover {
+    background-color: #f7f7f7;
+    cursor: pointer;
+  }
+  
+  .table-bck-11 {
+    background-color: #5b85f1;
+    color: white; 
+    padding: 8px; 
+    text-align: center;
+  }

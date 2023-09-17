@@ -1,0 +1,131 @@
+.BillDash {
+    background-color: #ccc;
+    text-align: center;
+    padding: 20px;
+  }
+  .card{
+    background-color: white;
+  }
+  /* .date3{
+    display: flex;
+  } */
+  
+  
+  .date-container button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  }
+  
+  .date-container label,
+  .date-container input {
+    margin: 5px;
+  }
+  .card-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  
+  .card-container2 {
+    display: flex;
+    height: 250px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    gap: 20px;
+  }
+  .sales-pagination input{
+    background-color:#ECECEC;
+    display: flex;
+  }
+  .card {
+    flex: 1;
+    max-width: calc(14.33% - 10px);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+  }
+  
+  .card2 {
+    flex: 1;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 10px;
+  }
+  .card-heading {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: -40px;
+    padding: 6px;
+    
+  }
+  
+  .card-content {
+    padding: 0;
+  }
+  
+  .statistic {
+    display: flex;
+    height: 35px;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+  }
+  
+  .sales-search {
+    display: flex;
+    border: none;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .sales-pagination input{
+    margin-bottom: 10px;
+    width: 60%;
+    height: 20px;
+    border: none;
+  }
+  .table-container {
+    overflow-x: auto;
+  }  
+  .search-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-icon {
+    margin-bottom: 5px;
+    margin-left: -20px; 
+    color: #777; 
+  }
+  
+  .sales-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .sales-table th,
+  .sales-table td {
+    background-color: #ECECEC;
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+  }
+  @media screen and (max-width: 768px) {
+    .card2 {
+      width: 0%;
+      max-width: none;
+      height: auto;
+    }
+    .sales-table{
+      width: 0%;
+      max-width: none;
+      height: auto;
+  
+    }
+  }
+  
