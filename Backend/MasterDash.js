@@ -22,7 +22,7 @@ connection.once('open', () => {
 const dataSchema = new mongoose.Schema({
   // Define your schema here
   //  invoiceNumber: String,
-  //       stockName: String,
+  //  stockName: String,
         date: String,
         Medicine:String,
         Batch: String,

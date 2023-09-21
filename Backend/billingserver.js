@@ -43,6 +43,47 @@ const patientSchema = new mongoose.Schema({
 
 const Patient = mongoose.model('Patient', patientSchema);
 
+app.get('/getPreviousBill', async (req, res) => {
+  try {
+    
+    const previousBillData = await Patient.find({});
+    res.status(200).json(previousBillData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Unable to fetch previous bill data.' });
+  }
+});
+app.get('/calculateTotals', async (req, res) => {
+  try {
+    const totalsData = await Patient.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalSales: { $sum: '$sales.amount' },
+          totalBillAmount: { $sum: '$billAmount' },
+          totalPaidAmount: { $sum: '$paidAmount' },
+          totalNetAmount: { $sum: '$netAmount' },
+          
+        },
+      },
+      {
+        $project: {
+          _id: 0, 
+        },
+      },
+    ]);
+
+    if (totalsData.length > 0) {
+      res.status(200).json(totalsData[0]);
+    } else {
+      res.status(404).json({ error: 'No data found for calculations.' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Unable to calculate totals.' });
+  }
+});
+
 app.post('/saveData', async (req, res) => {
   try {
     const patientData = req.body;
@@ -54,6 +95,17 @@ app.post('/saveData', async (req, res) => {
     res.status(500).json({ error: 'Unable to save patient data.' });
   }
 });
+
+app.get('/getAllData', async (req, res) => {
+  try {
+    const allPatientData = await Patient.find({});
+    res.status(200).json(allPatientData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Unable to fetch patient data.' });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

@@ -29,11 +29,17 @@ import React from 'react'
 import Bills from './FrontDesk/Bills'
 import PharmacyBilling from './FrontDesk/PharmacyBilling'
 import Vitals from './FrontDesk/Vitals'
+import BillingDashboard from './FrontDesk/BillingDashboard'
+import PatientList from './FrontDesk/BillAll'
+import AllBills from './FrontDesk/AllBills'
 
 export default function App() {
   return (
     <div>
-      <Vitals/>
+     {/* <PharmacyBilling/> */}
+     {/* <BillingDashboard/> */}
+     <AllBills/>
+     {/* <PatientList/> */}
     </div>
   )
 }

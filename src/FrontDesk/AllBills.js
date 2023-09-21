@@ -5,21 +5,96 @@ import axios from 'axios';
 import { AiFillPrinter,AiOutlineDelete } from "react-icons/ai";
 
 function AllBills() {
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
-  const [search] = useState('');
-  const [returnbycash, setReturnbycash] = useState(0);
-  const [Totalbilled, setTotalbilled] = useState(0);
-  const [returnbycard, setReturnbycard] = useState(0);
-  const [collectedbycash, setcollectedbycash] = useState(0);
-  const [collectedbycard, setcollectedbycard] = useState(0);
-  const [collectedbyothers, setcollectedByOthers] = useState(0);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [patientData, setPatientData] = useState([]);
+  const [grandTotalSales, setGrandTotalSales] = useState(0);
+  const [grandTotalSalesCount, setGrandTotalSalesCount] = useState(0);
+  const [totalPatientsCount, setTotalPatientsCount] = useState(0);
+  const [totalBillAmount, setTotalBillAmount] = useState(0);
+  const [totalCashAmount, setTotalCashAmount] = useState(0);
+  const [totalCardAmount, setTotalCardAmount] = useState(0);
+  const [totalOtherAmount, setTotalOtherAmount] = useState(0);
+  const [returnbycash, setReturnByCash] = useState(0);
+  const [returnbycard, setReturnByCard] = useState(0);
+  const [returnbyothers, setReturnByOthers] = useState(0);
+  const [countCash, setCountCash] = useState(0);
+  const [countCard, setCountCard] = useState(0);
+  const [countOther, setCountOther] = useState(0);
   const [salesData, setSalesData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    fetchData();
   }, []);
+  const handleFilterClick = () => {
+    // Filter and update patient data based on the selected date range
+    if (startDate && endDate) {
+      const filtered = patientData.filter((patient) => {
+        const billDate = new Date(patient.billdate);
+        return billDate >= new Date(startDate) && billDate <= new Date(endDate);
+      });
 
+      // Calculate totals based on the filtered data
+      const {
+        totalSalesCount,
+        totalPatientsCount,
+        totalBillAmount,
+        cashAmount,
+        cardAmount,
+        otherAmount,
+      } = calculateTotals(filtered);
+
+      // Update state variables with filtered data
+      setFilteredData(filtered);
+      setGrandTotalSalesCount(totalSalesCount);
+      setTotalPatientsCount(totalPatientsCount);
+      setTotalBillAmount(totalBillAmount);
+      setTotalCashAmount(cashAmount);
+      setTotalCardAmount(cardAmount);
+      setTotalOtherAmount(otherAmount);
+    }
+  };
+  const calculateTotals = (data) => {
+    const totalSalesCount = data.reduce((acc, patient) => {
+      return acc + patient.sales.length;
+    }, 0);
+
+    const totalPatientsCount = data.length;
+
+    const totalBillAmount = data.reduce((acc, patient) => {
+      return acc + parseFloat(patient.billAmount);
+    }, 0);
+
+    const cashAmount = data.reduce((acc, patient) => {
+      if (patient.selectedPaymentMethod === 'cash') {
+        return acc + parseFloat(patient.billAmount);
+      }
+      return acc;
+    }, 0);
+
+    const cardAmount = data.reduce((acc, patient) => {
+      if (patient.selectedPaymentMethod === 'card') {
+        return acc + parseFloat(patient.billAmount);
+      }
+      return acc;
+    }, 0);
+
+    const otherAmount = data.reduce((acc, patient) => {
+      if (patient.selectedPaymentMethod !== 'cash' && patient.selectedPaymentMethod !== 'card') {
+        return acc + parseFloat(patient.billAmount);
+      }
+      return acc;
+    }, 0);
+
+    return {
+      totalSalesCount,
+      totalPatientsCount,
+      totalBillAmount,
+      cashAmount,
+      cardAmount,
+      otherAmount,
+    };
+  };
   const handlePrintTable = () => {
     const printWindow = window.open('', '', 'width=600,height=600');
   
@@ -70,22 +145,6 @@ function AllBills() {
     setSalesData(updatedSalesData);
   };
   
-  const fetchData = async () => {
-    try {
-      const response = await axios.get('http://127.0.0.1:5000/properties');
-      const data = response.data[0];
-
-    setTotalbilled(data.Totalbilled);
-    setcollectedbycash(data.collectedbycash);
-    setcollectedbycard(data.collectedbycard);
-    setcollectedByOthers(data.collectedbyothers);
-    setReturnbycard(data.returnbycard);
-    setReturnbycash(data.returnbycash);
-    setSalesData(response.data);
-  } catch (error) {
-    console.error(error);
-  }
-};
 const renderSalesData = () => {
   return salesData.map((data, index) => (
     <tr key={index}>
@@ -107,35 +166,43 @@ const renderSalesData = () => {
   return (
     <div className="Allbillsform">
         <h3 className='date2'>Date Range</h3>
-      <div className="date-container">
-        
-        <label className='fromdate'>From: </label>
-        <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
-        <label className='todate'>To:</label>
-        <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
-        <button>Go</button>
+        <div className="date-container">
+        <label>From: </label>
+        <input
+          className="date3"
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+        />
+        <label>To:</label>
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+        <button onClick={handleFilterClick}>Go</button>
       </div>
       <div className="date-container12">
-        <input type="text" value={search} placeholder='Search by Name,Order ID' />
+        <input type="text" placeholder='Search by Name,Order ID' />
         <button>Search</button>
       </div>
       <hr/>
       <div className="card-container">
         <div className="card">
           <label>Total Billed</label>
-          <p>{Totalbilled}</p>
+          <p>{totalPatientsCount}</p>
         </div>
         <div className="card">
           <label>Collected By Cash</label>
-          <p>{collectedbycash}</p>
+          <p>{totalCashAmount.toFixed(2)}</p>
         </div>
         <div className="card">
           <label>Collected by Card</label>
-          <p>{collectedbycard}</p>
+          <p>{totalCardAmount.toFixed(2)}</p>
         </div>
         <div className="card">
           <label>Collect by Others</label>
-          <p>{collectedbyothers}</p>
+          <p>{totalOtherAmount.toFixed(2)}</p>
         </div>
         <div className="card">
           <label>Return by Cash</label>
@@ -147,7 +214,7 @@ const renderSalesData = () => {
         </div>
         <div className="card">
           <label>Return by others</label>
-          <p>{collectedbyothers}</p>
+          <p>{returnbyothers}</p>
         </div>
       </div>
       <div className="card-container2">

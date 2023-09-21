@@ -27,6 +27,9 @@ import axios from 'axios';
     const [patientEmail, setPatientEmail] = useState(''); 
     const [referredDoctor, setReferredDoctor] = useState('');
     const [editedSale, setEditedSale] = useState(null);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [fetchedBillData, setFetchedBillData] = useState(null);
+    const [isNewBill, setIsNewBill] = useState(true);
     const [patientData, setPatientData] = useState({
         name: '',
         gender: '',
@@ -141,7 +144,7 @@ import axios from 'axios';
     
     const handleEditClick = (index) => {
         const selectedSale = sales[index];
-        setEditedSale(selectedSale); // Set the edited sale when "Edit" is clicked
+        setEditedSale(selectedSale); 
         setEditingIndex(index);
       };
   const handleDeleteClick = (index) => {
@@ -211,26 +214,179 @@ import axios from 'axios';
     fetchData();
   }
 }, []);
+
+const handleClearBillClick = () => {
   
+  setBillDate('');
+  setPatientName('');
+  setPatientGender('');
+  setPatientPhone('');
+  setPatientEmail('');
+  setReferredDoctor('');
+  setSales([]);
+  setGst(0);
+  setNetAmount(0);
+  setRoundOff(0);
+  setBillAmount(0);
+  setPaidAmount(0);
+  setReference('');
+  setCurrentSale({
+    medicineName: '',
+    batch: '',
+    price: '',
+    total: '',
+    quantity: '',
+    discount: '',
+  });
+};
 
-  const handleSaveAndPrintClick = () => {
-    
+const openPopupWithBillData = async () => {
+  try {
+    const response = await axios.get('http://localhost:5000/getPreviousBill');
+
+    if (response.status === 200) {
+      
+      setFetchedBillData(response.data);
+
+      const popup = window.open('', '_blank', 'width=600,height=400');
+      if (popup) {
+        popup.document.open();
+        popup.document.write(
+          `<html><head><title>Previous Bill</title></head><body><h2>Previous Bills</h2><pre>${JSON.stringify(
+            response.data,
+            null,
+            2
+          )}</pre></body></html>`
+        );
+        popup.document.close();
+      } else {
+        console.error('Failed to open popup window');
+      }
+    } else {
+      console.error('Failed to fetch previous bill data');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+const closePopup = () => {
+  setIsPopupOpen(false);
+};
+
+const handleSaveAndPrintClick = async () => {
+  try {
+    const response = await axios.post('http://localhost:5000/saveData', {
+      ...patientData,
+      sales,
+    });
+
+    if (response.status === 200) {
+      console.log('Data saved successfully');
+    } else {
+      console.error('Failed to save data');
+      return;
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return;
+  }
+
+  // Clear specific input fields here
+  setCurrentSale({
+    medicineName: '',
+    batch: '',
+    price: '',
+    quantity: '',
+    discount: '',
+    total: '',
+    amount: '',
+  });
+
+  // Clear patient data fields
+  setPatientData({
+    name: '',
+    gender: '',
+    phone: '',
+    email: '',
+    referredDoctor: '',
+    billdate: '',
+    selectedPaymentMethod: '',
+    gst: '',
+    netAmount: '',
+    roundOff: '',
+    billAmount: '',
+    paidAmount: '',
+    reference: '',
+  });
+
+  setSales([]);
+
+  setSelectedPaymentMethod('cash');
+  setGst(0);
+  setNetAmount(0);
+  setRoundOff(0);
+  setBillAmount(0);
+  setPaidAmount(0);
+  setReference('');
+
+
+  const popup = window.open('', '_blank', 'width=600,height=400');
+  if (popup) {
+    popup.document.open();
+    popup.document.write(
+      `<html><head><title>Printed Bill</title></head><body><h2>Printed Bill</h2>` +
+      `<p>Patient Name: ${patientData.name}</p>` +
+      `<p>Bill Date: ${patientData.billdate}</p>` +
+      `<table border="1" cellpadding="5"><thead><tr><th>Medicine Name</th><th>Batch</th><th>Price</th><th>Quantity</th><th>Total</th><th>Discount</th><th>Amount</th></tr></thead><tbody>` +
+      `${sales.map((sale, index) => (
+        `<tr key=${index}><td>${sale.medicineName}</td><td>${sale.batch}</td><td>${sale.price}</td><td>${sale.quantity}</td><td>${sale.total}</td><td>${sale.discount}</td><td>${sale.amount}</td></tr>`
+      )).join('')}` +
+      `</tbody></table>` +
+      `</body></html>`
+    );
+    popup.document.close();
+  } else {
+    console.error('Failed to open popup window');
+  }
+};
+
+
+  const BillPopup = () => {
+    return (
+      <div className="popup">
+        <div className="popup-content">
+          <h2>Previous Bill</h2>
+          <pre>{JSON.stringify(fetchedBillData, null, 2)}</pre>
+          <button onClick={closePopup}>Close</button>
+        </div>
+      </div>
+    );
   };
+  useEffect(() => {
+    if (isNewBill) {
+      setBillDate('');
+      // Reset other form fields as needed
 
+      // Set isNewBill to false to indicate it's not a new bill anymore
+      setIsNewBill(false);
+    }
+  }, [isNewBill]);
   return (
     <div className="PharmacyBilling">
       <h3 className='date23'>Pharmacy Billing :<hr/></h3>
       
       <div className="main-content">
-        <div className='bill123'>
+      <div className='bill123'>
           <label>Bill Date:</label>
           <input 
-          type="date" 
-          value={billdate} 
-          onChange={(e) => setPatientData({ ...patientData, billdate: e.target.value })}
+            type="date" 
+            value={patientData.billdate} 
+            onChange={(e) => setPatientData({ ...patientData, billdate: e.target.value })}
           />
-          <button className='but12'>Clear Bill</button>
-          <button className='but23'>Print prev bill</button>
+          <button className='but12' onClick={handleClearBillClick}>Clear Bill</button>
+          <button className='but23' onClick={openPopupWithBillData}>Print prev bill</button>
+          {isPopupOpen && <BillPopup />}
         </div>
         <div className="card-container22">
           <div className="card22">
